@@ -6,15 +6,13 @@ entities:
   - entity: switch.predbat_calculate_best
   - entity: switch.predbat_calculate_best_charge
   - entity: switch.predbat_calculate_best_discharge
-  - entity: switch.predbat_calculate_charge_all
-  - entity: switch.predbat_calculate_charge_oldest
-  - entity: switch.predbat_calculate_discharge_all
   - entity: switch.predbat_calculate_discharge_first
-  - entity: switch.predbat_calculate_discharge_oldest
   - entity: switch.predbat_rate_low_match_export
   - entity: switch.predbat_set_charge_window
   - entity: switch.predbat_set_discharge_notify
   - entity: switch.predbat_set_discharge_window
+  - entity: switch.predbat_set_discharge_freeze
+  - entity: switch.predbat_set_discharge_freeze_only
   - entity: switch.predbat_set_reserve_enable
   - entity: switch.predbat_set_reserve_notify
   - entity: switch.predbat_set_soc_enable
@@ -28,24 +26,24 @@ entities:
   - entity: switch.predbat_combine_discharge_slots
   - entity: switch.predbat_combine_mixed_rates
   - entity: switch.predbat_iboost_enable
-  - entity: switch.predbat_inverter_hybrid  
+  - entity: switch.predbat_inverter_hybrid
+  - entity: switch.predbat_inverter_soc_reset
+  - entity: switch.predbat_battery_capacity_nominal
+  - entity: switch.predbat_car_charging_from_battery
   - entity: input_number.predbat_battery_loss
   - entity: input_number.predbat_battery_loss_discharge
   - entity: input_number.predbat_inverter_loss
   - entity: input_number.predbat_battery_rate_max_scaling
+  - entity: input_number.predbat_metric_battery_cycle
   - entity: input_number.predbat_best_soc_keep
   - entity: input_number.predbat_best_soc_margin
   - entity: input_number.predbat_best_soc_min
   - entity: input_number.predbat_best_soc_max
   - entity: input_number.predbat_best_soc_step
-  - entity: input_number.predbat_calculate_charge_passes
-  - entity: input_number.predbat_calculate_discharge_passes
   - entity: input_number.predbat_car_charging_energy_scale
   - entity: input_number.predbat_car_charging_loss
   - entity: input_number.predbat_car_charging_rate
   - entity: input_number.predbat_car_charging_threshold
-  - entity: input_number.predbat_charge_slot_split
-  - entity: input_number.predbat_discharge_slot_split
   - entity: input_number.predbat_iboost_max_energy
   - entity: input_number.predbat_iboost_max_power
   - entity: input_number.predbat_iboost_min_power
@@ -61,6 +59,7 @@ entities:
   - entity: input_number.predbat_set_reserve_min
   - entity: input_number.predbat_set_soc_minutes
   - entity: input_number.predbat_set_window_minutes
+  - entity: input_number.predbat_holiday_days_left
   - entity: binary_sensor.predbat_car_charging_slot
   - entity: binary_sensor.predbat_export_trigger_large
   - entity: binary_sensor.predbat_export_trigger_small
@@ -69,6 +68,8 @@ entities:
   - entity: predbat.battery_hours_left
   - entity: predbat.battery_power
   - entity: predbat.battery_power_best
+  - entity: predbat.battery_cycle
+  - entity: predbat.battery_cycle_best
   - entity: predbat.best10_export_energy
   - entity: predbat.best10_import_energy
   - entity: predbat.best10_load_energy

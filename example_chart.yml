@@ -107,7 +107,17 @@ series:
       b[0]  })
     show:
       in_header: raw
-      
+  - entity: predbat.soc_kw_base10
+    stroke_width: 1
+    curve: smooth
+    name: base10
+    data_generator: >
+      let res = []; for (const [key, value] of
+      Object.entries(entity.attributes.results)) { res.push([new
+      Date(key).getTime(), value]); } return res.sort((a, b) => { return a[0] -
+      b[0]  })
+    show:
+      in_header: raw      
 ###############################################
 # This is a cost chart
 ###############################################
@@ -169,7 +179,41 @@ series:
       b[0]  })
     show:
       in_header: raw
-
+  - entity: predbat.cost_today_import
+    stroke_width: 1
+    curve: smooth
+    name: actual_import
+    extend_to: now
+    data_generator: >
+      let res = []; for (const [key, value] of
+      Object.entries(entity.attributes.results)) { res.push([new
+      Date(key).getTime(), value]); } return res.sort((a, b) => { return a[0] -
+      b[0]  })
+    show:
+      in_header: raw
+  - entity: predbat.cost_today_export
+    stroke_width: 1
+    curve: smooth
+    name: actual_export
+    extend_to: now
+    data_generator: >
+      let res = []; for (const [key, value] of
+      Object.entries(entity.attributes.results)) { res.push([new
+      Date(key).getTime(), -value]); } return res.sort((a, b) => { return a[0] -
+      b[0]  })
+    show:
+      in_header: raw      
+  - entity: predbat.base10_metric
+    stroke_width: 1
+    curve: smooth
+    name: base10
+    data_generator: >
+      let res = []; for (const [key, value] of
+      Object.entries(entity.attributes.results)) { res.push([new
+      Date(key).getTime(), value]); } return res.sort((a, b) => { return a[0] -
+      b[0]  })
+    show:
+      in_header: raw
 ###############################################
 # Energy rate chart
 ###############################################
@@ -230,6 +274,26 @@ now:
 yaxis:
   - min: 0
 series:
+  - entity: predbat.load_energy_h0
+    stroke_width: 1
+    curve: smooth
+    name: load actual
+    extend_to: now
+  - entity: predbat.import_energy_h0
+    stroke_width: 1
+    curve: smooth
+    name: import actual
+    extend_to: now
+  - entity: predbat.export_energy_h0
+    stroke_width: 1
+    curve: smooth
+    name: export actual
+    extend_to: now
+  - entity: predbat.pv_energy_h0
+    stroke_width: 1
+    curve: smooth
+    name: PV actual
+    extend_to: now
   - entity: predbat.best_load_energy
     stroke_width: 1
     curve: smooth

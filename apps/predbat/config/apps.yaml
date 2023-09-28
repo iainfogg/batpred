@@ -11,15 +11,22 @@ pred_bat:
 
   # Timezone to work in
   timezone: Europe/London
-  
+
+  # XXX: This is a configuration template, delete this line once you edit your configuration
+  template: True
+
   # Set to auto-match with a GivEnergy serial number, but you can override the serial or the sensor names
   # if it doesn't work or if you have more than one inverter you will need to list both
   geserial: 're:sensor.givtcp_(.+)_soc_kwh'
   geserial2: 're:sensor.givtcp2_(.+)_soc_kwh'
-
+  
   #
-  # Sensors, currently more than one can be specified and they will be summed up automatically
-  # however if you have two inverters only set one of them as they will both read the same.
+  # Sensors, more than one can be specified and they will be summed up automatically
+  #
+  # For two inverters the load today would normally be the master load sensor only (to cover the entire house)
+  # If you have three phase and one inverter per phase then you would need three load sensors
+  #
+  # For pv_today if you have multiple solar inverter inputs then you should include one entry for each inverter
   #
   load_today: 
     - sensor.givtcp_{geserial}_load_energy_today_kwh
@@ -27,6 +34,8 @@ pred_bat:
     - sensor.givtcp_{geserial}_import_energy_today_kwh
   export_today: 
     - sensor.givtcp_{geserial}_export_energy_today_kwh
+  pv_today:
+    - sensor.givtcp_{geserial}_pv_energy_today_kwh
   #
   # If you enable ge_cloud_data then the load/import and export data will be fetches from the GE cloud instead of from GivTCP sensors
   # this is usually less efficent and of course prone to internet downtime, but could be useful if you lost your GivTCP data
@@ -40,6 +49,9 @@ pred_bat:
   # Controls/status - must by 1 per inverter
   #
   num_inverters: 1
+  #
+  # Run balance inverters every N seconds (0=disabled) - only for multi-inverter
+  balance_inverters_seconds: 60
   #
   # When set use the REST API rather than HA entity for control, should be more reliable/faster to control
   # Set one per inverter
@@ -56,7 +68,10 @@ pred_bat:
   discharge_rate: 
     - number.givtcp_{geserial}_battery_discharge_rate
     - number.givtcp2_{geserial2}_battery_discharge_rate
-  soc_kw: 
+  battery_power: 
+    - number.givtcp_{geserial}_battery_power
+    - number.givtcp2_{geserial2}_battery_power
+  soc_kw:
     - sensor.givtcp_{geserial}_soc_kwh
     - sensor.givtcp2_{geserial2}_soc_kwh
   soc_max: 
@@ -99,9 +114,31 @@ pred_bat:
    - 7500
    - 7500
 
+  # Export limit is a software limit set on your inverter that prevents exporting above a given level
+  # When enabled Predbat will model this limit
+  #export_limit:
+  # - 3600
+  # - 3600
+
+  # Some batteries tail off their charge rate at high soc%
+  # enter the charging curve here as a % of the max charge rate for each soc pecentage.
+  # the default is 1.0 (full power)
+  # The example below is from GE 9.5kwh battery with latest firmware and gen1 inverter
+  #battery_charge_power_curve:
+  #  91 : 0.91
+  #  92 : 0.81
+  #  93 : 0.71
+  #  94 : 0.62
+  #  95 : 0.52
+  #  96 : 0.43
+  #  97 : 0.33
+  #  98 : 0.24
+  #  99 : 0.24
+  #  100 : 0.24
+
   # Inverter clock skew in minutes, e.g. 1 means it's 1 minute fast and -1 is 1 minute slow
-  # Seperate start and end options are applied to the start and end time windows, mostly as you want to start late (not early) and finish early (not late)
-  # Seperate discharge skew for discharge windows only
+  # Separate start and end options are applied to the start and end time windows, mostly as you want to start late (not early) and finish early (not late)
+  # Separate discharge skew for discharge windows only
   inverter_clock_skew_start: 0
   inverter_clock_skew_end: 0
   inverter_clock_skew_discharge_start: 0
@@ -116,22 +153,28 @@ pred_bat:
   # Set these to match solcast sensor names
   # The regular expression (re:) makes the solcast bit optional
   # If these don't match find your own names in Home Assistant
-  pv_forecast_today: re:(sensor.(solcast_|)forecast_today)
-  pv_forecast_tomorrow: re:(sensor.(solcast_|)forecast_tomorrow)
-  pv_forecast_d3: re:(sensor.(solcast_|)forecast_d3)
-  pv_forecast_d4: re:(sensor.(solcast_|)forecast_d4)
+  pv_forecast_today: re:(sensor.(solcast_|)(pv_forecast_|)forecast_today)
+  pv_forecast_tomorrow: re:(sensor.(solcast_|)(pv_forecast_|)forecast_tomorrow)
+  pv_forecast_d3: re:(sensor.(solcast_|)(pv_forecast_|)forecast_(day_3|d3))
+  pv_forecast_d4: re:(sensor.(solcast_|)(pv_forecast_|)forecast_(day_4|d4))
 
   # car_charging_energy defines an incrementing sensor which measures the charge added to your car
   # is used for car_charging_hold feature to filter out car charging from the previous load data
   # Automatically set to detect Wallbox and Zappi, if it doesn't match manually enter your sensor name
   # Also adjust car_charging_energy_scale if it's not in kwH to fix the units
   car_charging_energy: 're:(sensor.myenergi_zappi_[0-9a-z]+_charge_added_session|sensor.wallbox_portal_added_energy)'
+
+  # Defines the number of cars modelled by the system, set to 0 for no car
+  num_cars: 1
   
   # car_charging_planned is set to a sensor which when positive indicates the car will charged in the upcoming low rate slots
   # This should not be needed if you use Octopus Intelligent Slots which will take priority if enabled
   # The list of possible values is in car_charging_planned_response
   # Auto matches Zappi and Wallbox, or change it for your own
-  car_charging_planned: 're:(sensor.wallbox_portal_status_description|sensor.myenergi_zappi_[0-9a-z]+_plug_status)'
+  # One entry per car
+  car_charging_planned: 
+    - 're:(sensor.wallbox_portal_status_description|sensor.myenergi_zappi_[0-9a-z]+_plug_status)'
+
   car_charging_planned_response:
     - 'yes'
     - 'on'
@@ -150,15 +193,23 @@ pred_bat:
 
   # To make planned car charging more accurate, either using car_charging_planned or Octopus Inteligent
   # specify your battery size in kwh, charge limit % and current car battery soc % sensors/values
-  # If you have intelligent you don't need to use this as it allocate slots, but it may help to get a more accurate figure
-  # car_charging_battery_size: 75
-  # car_charging_limit: 're:number.tsunami_charge_limit'
-  # car_charging_soc: 're:sensor.tsunami_battery'
+  # If you have intelligent the battery size and limit will be extracted from Intelligent directly
+  # Set the car SOC% if you have it to give an accurate forecast of the cars battery levels
+  # One entry per car if you have multiple cars
+  #car_charging_battery_size: 
+  #  - 75
+  #car_charging_limit: 
+  #  - 're:number.tsunami_charge_limit'
+  #car_charging_soc: 
+  #  - 're:sensor.tsunami_battery'
 
   # If you have Octopus intelligent, enable the intelligent slot information to add to pricing
   # Will automatically disable if not found, or comment out to disable fully
-  # When enabled it overrides the 'car_charging_planned' feature and predict the car charging based on the intelligent plan (unless octopus intelligent charging is False)
-  octopus_intelligent_slot: 're:binary_sensor.octopus_intelligent_slot'
+  # When enabled it overrides the 'car_charging_planned' feature for car 0 and predict the car charging based on the intelligent plan (unless octopus intelligent charging is False)
+  # This matches either the intelligent slot from the Octopus Plugin or from the Intelligent plugin
+  octopus_intelligent_slot: 're:binary_sensor.octopus_energy_intelligent_dispatching'
+  octopus_ready_time: 're:time.octopus_energy_intelligent_ready_time'
+  octopus_charge_limit: 're:number.octopus_energy_intelligent_charge_limit'
 
   # Energy rates
   # Please set one of these three, if multiple are set then Octopus is used first, second rates_import/rates_export and latestly basic metric
@@ -171,7 +222,13 @@ pred_bat:
   # sensor.octopus_energy_electricity_xxxxxxxxxx_xxxxxxxxxxxxx_export_current_rate
   metric_octopus_import: 're:(sensor.(octopus_energy_|)electricity_[0-9a-z]+_[0-9a-z]+_current_rate)'
   metric_octopus_export: 're:(sensor.(octopus_energy_|)electricity_[0-9a-z]+_[0-9a-z]+_export_current_rate)'
-  
+ 
+  # Standing charge in pounds, can be set to a sensor or manually entered (e.g. 0.50 is 50p)
+  # The default below will pick up the standing charge from the Octopus Plugin
+  # The standing charge only impacts the cost graphs and doesn't change the way Predbat plans
+  # If you don't want to show the standing charge then just delete this line or set to zero
+  metric_standing_charge: 're:(sensor.(octopus_energy_|)electricity_[0-9a-z]+_[0-9a-z]+_current_standing_charge)'
+
   # Or set your actual rates across time for import and export
   # If start/end is missing it's assumed to be a fixed rate
   # Gaps are filled with zero rate
@@ -195,6 +252,17 @@ pred_bat:
   # rates_export_octopus_url: "https://api.octopus.energy/v1/products/FLUX-EXPORT-BB-23-02-14/electricity-tariffs/E-1R-FLUX-EXPORT-BB-23-02-14-A/standard-unit-rates"
   # rates_export_octopus_url: "https://api.octopus.energy/v1/products/AGILE-OUTGOING-BB-23-02-28/electricity-tariffs/E-1R-AGILE-OUTGOING-BB-23-02-28-A/standard-unit-rates/"
   # rates_export_octopus_url: "https://api.octopus.energy/v1/products/OUTGOING-FIX-12M-BB-23-02-09/electricity-tariffs/E-1R-OUTGOING-FIX-12M-BB-23-02-09-A/standard-unit-rates/"
+
+  # Import rates can be overriden with rate_import_override
+  # Export rates can be overriden with rate_export_override
+  # Use the same format as above, but a date can be included if it just applies for a set day (e.g. Octopus power ups)
+  # This will override even the Octopus plugin rates if enabled
+  #
+  #rates_import_override:
+  # -  date: '2023-09-10'
+  #    start: '14:00:00'
+  #    end: '14:30:00'
+  #    rate: 5
 
   # For pv estimate, leave blank for central estimate, or add 10 for 10% curve (worst case) or 90 or 90% curve (best case)
   # If you use 10 then disable pv_metric10_weight below
@@ -232,7 +300,7 @@ pred_bat:
   # recommend something that divides by 60 (5, 10 or 15) or you won't trigger at the start of energy price slots
   run_every: 5
 
-  # Battery scaling makes the battery smaller (e.g. 0.9) or bigger than its reported
+  # Battery scaling makes the battery smaller (e.g. 0.9) or bigger than its reported
   # If you have an 80% DoD battery that falsely reports it's kwh then set it to 0.8 to report the real figures
   battery_scaling: 1.0
   
@@ -240,7 +308,7 @@ pred_bat:
   import_export_scaling: 1.0
 
   # Export triggers:
-  # For each trigger give a name, the minutes of export needed and the energy required in that time
+  # For each trigger give a name, the minutes of export needed and the energy required in that time
   # Multiple triggers can be set at once so in total you could use too much energy if all run
   # Creates an entity called 'binary_sensor.predbat_export_trigger_<name>' which will be turned On when the condition is valid
   # connect this to your automation to start whatever you want to trigger
@@ -251,7 +319,9 @@ pred_bat:
      - name: 'small'
        minutes: 15
        energy: 0.25
-  
 
-
- 
+  # If you have a sensor that gives the energy consumed by your solar diverter then add it here
+  # this will make the predictions more accurate. It should be an incrementing sensor, it can reset at midnight or not
+  # It's assumed to be in Kwh but scaling can be applied if need be
+  #iboost_energy_today: 'sensor.xxxxx'
+  #iboost_energy_scaling: 1.0
