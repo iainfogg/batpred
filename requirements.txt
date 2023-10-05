@@ -1,3 +1,4 @@
 pytz
 appdaemon
 pytest
+pytest-mock
