@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Energy rates - Predbat Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Energy rates";
+        var mkdocs_page_input_path = "energy-rates.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Predbat Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Introduction</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../operation/">Operation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../step-by-step-guide/">Step by step guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../install/">Install</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Energy rates</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#octopus-energy-plugin">Octopus Energy Plugin</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#octopus-saving-sessions">Octopus Saving sessions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rate-bands">Rate bands</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#rate-offsets">Rate offsets</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../car-charge-planning/">Car charging planning</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../config-yml-settings/">config.yml settings</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../configuration-guide/">Configuration guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../video-guides/">Video Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../faq/">FAQ</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../customisation/">Customisation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../output-data/">Output data</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../creating-charts/">Creating the charts</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../predbat-plan-card/">Predbat Plan card</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../todo-list/">Todo list</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Predbat Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Energy rates</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="energy-rates">Energy rates</h1>
+<h2 id="octopus-energy-plugin">Octopus Energy Plugin</h2>
+<ul>
+<li>If you want to use real pricing data and have Octopus Energy then ensure you have the Octopus Energy plugin installed and working (<a href="https://github.com/BottlecapDave/HomeAssistant-OctopusEnergy/">https://github.com/BottlecapDave/HomeAssistant-OctopusEnergy</a>)</li>
+<li>The Octopus Energy Plugin also provides support for Intelligent Octopus charging to support car charging</li>
+<li>When <strong>octopus_intelligent_charging</strong> is True and you are on Intelligent Octopus import the car charging plan will be extracted from Octopus and used for Predbat to plan, and it may charge the home battery using these slots also.</li>
+</ul>
+<h3 id="octopus-saving-sessions">Octopus Saving sessions</h3>
+<p>For Predbat to automatically manage saving sessions you will need to make sure that <strong>octopus_saving_session</strong> is set in apps.yaml to point to the saving session binary sensor supported by the Octopus Energy plugin (see template apps.yaml for the default name)</p>
+<p>When a saving session is active the energy rates for import and export will be overriden with the assumed rate set in Home Assistant with <strong>input_number.predbat_metric_octopus_saving_rate</strong>, if this rate is 0 then the feature is disabled (default). You should set this to the saving rate published by Octopus for the session (currently there is no sensor for this rate).</p>
+<p>For best results ensure <strong>switch.predbat_combine_charge_slots</strong> is turned off and that you have enough windows (<strong>input_number.predbat_calculate_max_windows</strong>) available to allow Predbat to charge before the event if need be, e.g. a value of 48 would normally be suitable. Set <strong>input_number.rate_low_threshold</strong> and <strong>input_number.rate_high_threshold</strong> to 0 for automatic mode.</p>
+<h2 id="rate-bands">Rate bands</h2>
+<ul>
+<li>you can configure your rate bands (assuming they repeat) using rates_import/rates_export (see below)</li>
+</ul>
+<h2 id="rate-offsets">Rate offsets</h2>
+<ul>
+<li>Note that you can tune future unknown energy rates by adjusting <strong>input_number.predbat_metric_future_rate_offset_import</strong> and <strong>input_number.predbat_metric_future_rate_offset_export</strong> inside Home Assistant to set the predicted offset for future unknown rates. </li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../install/" class="btn btn-neutral float-left" title="Install"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../car-charge-planning/" class="btn btn-neutral float-right" title="Car charging planning">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../install/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../car-charge-planning/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
