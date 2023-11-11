@@ -22,7 +22,7 @@
 
 - Once installed you will get automatic updates from each release!
 
-- Add https://github.com/springfall2008/batpred as a custom repository of type 'AppDaemon'
+- Add <https://github.com/springfall2008/batpred> as a custom repository of type 'AppDaemon'
 - Click on the Repo and Download the app
 
 *After an update with HACS you may need to reboot AppDaemon as it sometimes reads the config wrongly during the update (If this happens you will get a template configuration error).*
@@ -33,7 +33,7 @@
 
 ## Predbat manual install
 
-**Not recommended if you have HACS**
+Note: Not recommended if you have HACS
 
 - Copy apps/predbat/predbat.py to 'config/appdaemon/apps/' directory in home assistant
 - Copy apps/predbat/apps.yml to 'config/appdaemon/apps' directory in home assistant
@@ -47,7 +47,7 @@ Predbat needs a solar forecast in order to predict battery levels.
 
 If you don't have solar then comment out the Solar forecast part of the apps.yml: **pv_forecast_* **
 
-- Make sure Solcast is installed and working (https://github.com/oziee/ha-solcast-solar)
+- Make sure Solcast is installed and working (<https://github.com/oziee/ha-solcast-solar>)
 
 - Note that Predbat does not update Solcast for you, it's recommended that you disable polling (due to the API polling limit) in the Solcast plugin and instead have your own automation that updates the forecast a few times a day (e.g. dawn, dusk and just before your nightly charge slot).
 
