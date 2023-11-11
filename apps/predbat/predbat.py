@@ -1119,7 +1119,7 @@ class Inverter:
         """
         GivTCP Workaround, keep writing until correct
         """
-        # Re-writtem to minimise writes
+        # Re-written to minimise writes
         domain = entity.domain
 
         current_state = entity.get_state()
@@ -1155,7 +1155,7 @@ class Inverter:
 
     def write_and_poll_value(self, name, entity, new_value, fuzzy=0):
         # Modified to cope with sensor entities and writing strings
-        # Re-writtem to minimise writes
+        # Re-written to minimise writes
         domain = entity.domain
         current_state = entity.get_state()
 
@@ -1379,7 +1379,7 @@ class Inverter:
                     self.log("WARN: Inverter {} unable write discharge end time as neither REST or discharge_end_time are set".format(self.id))
 
         if (new_end != old_end) or (new_start != old_start):
-            # For Solis inveters we also have to press the update_charge_discharge button to send the times to the inverter
+            # For Solis inverters we also have to press the update_charge_discharge button to send the times to the inverter
             if self.inv_time_button_press:
                 entity_id = self.base.get_arg("charge_discharge_update_button", indirect=False, index=self.id)
                 self.press_and_poll_button(entity_id)
@@ -1484,7 +1484,7 @@ class Inverter:
 
         if self.inverter_type == "GS":
             # Solis just has a single switch for both directions
-            # Need to check the logic of how this is called if both charging and dischaging
+            # Need to check the logic of how this is called if both charging and discharging
 
             entity_id = self.base.get_arg("energy_control_switch", indirect=False, index=self.id)
             entity = self.base.get_entity(entity_id)
@@ -1654,7 +1654,7 @@ class Inverter:
             if self.rest_api and not SIMULATE:
                 self.rest_setChargeSlot1(new_start, new_end)
 
-            # For Solis inveters we also have to press the update_charge_discharge button to send the times to the inverter
+            # For Solis inverters we also have to press the update_charge_discharge button to send the times to the inverter
             if self.inv_time_button_press:
                 entity_id = self.base.get_arg("charge_discharge_update_button", indirect=False, index=self.id)
                 self.press_and_poll_button(entity_id)
