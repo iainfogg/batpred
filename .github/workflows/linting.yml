@@ -1,6 +1,6 @@
 name: linting
 on:
-#   pull_request: NOTE this must be re-enabled before going live
+  pull_request:
   push:
     branches: [code-style-*]
 jobs:
