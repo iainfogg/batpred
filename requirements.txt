@@ -1,4 +1,4 @@
-appdaemon
 mkdocs
 pre-commit
 pytz
+appdaemon
